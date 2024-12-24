@@ -1,0 +1,15 @@
+add_requires("opencv", "libharu", "spdlog")
+set_languages("c++23")
+
+target("PdfWriter")
+set_kind("static")
+add_files("src/**.cpp")
+add_includedirs("include", { public = true })
+add_packages("libharu", "spdlog")
+add_deps("Image")
+
+target("PdfWriterTest")
+set_kind("binary")
+add_files("test/**.cpp")
+add_packages("opencv", "spdlog", "libharu")
+add_deps("Image", "PdfWriter")
