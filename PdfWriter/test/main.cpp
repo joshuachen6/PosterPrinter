@@ -15,7 +15,7 @@ int main() {
   cv::imencode(".png", image, data);
 
   // Create the writer and write an image and some text
-  PdfWriter writer(100, 100);
+  PdfWriter writer(100, 100, 2);
   writer.addImage(data);
   writer.writeText("Hello");
 

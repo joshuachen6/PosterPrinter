@@ -38,13 +38,17 @@ int main() {
   std::cin >> sizeName;
   const std::pair<double, double> &size = pageSizes[sizeName];
 
+  // Set the outline width
+  double outlineWidth = 2;
+
   // Make the writer
-  PdfWriter writer(size.first, size.second);
+  PdfWriter writer(size.first, size.second, outlineWidth);
 
   // Split the image
   ImageSplitter splitter;
-  SplitterOptions options{static_cast<int>(writer.getWidth() - margin * 2),
-                          static_cast<int>(writer.getHeight() - margin * 2)};
+  SplitterOptions options{
+      static_cast<int>(writer.getWidth() - margin * 2 - outlineWidth),
+      static_cast<int>(writer.getHeight() - margin * 2 - outlineWidth)};
 
   SplitterOutput output = splitter.splitImage(inFile, options);
 

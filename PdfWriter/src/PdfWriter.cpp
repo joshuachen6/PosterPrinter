@@ -21,9 +21,10 @@ double PdfWriter::getWidth() const { return width; }
 
 double PdfWriter::getHeight() const { return height; }
 
-PdfWriter::PdfWriter(double width, double height) {
+PdfWriter::PdfWriter(double width, double height, double outline) {
   document = HPDF_New(error_handler, nullptr);
   font = HPDF_GetFont(document, "Times-Roman", nullptr);
+  this->outline = outline;
   this->width = width;
   this->height = height;
 }
@@ -32,17 +33,18 @@ PdfWriter::~PdfWriter() { HPDF_Free(document); }
 
 void PdfWriter::addImage(const ImageData &data) {
   HPDF_Page page = createPage();
+  // The width of the dash
 
   HPDF_Image image =
       HPDF_LoadPngImageFromMem(document, data.data(), data.size());
-  HPDF_Page_DrawImage(page, image, 0, 0, HPDF_Image_GetWidth(image),
-                      HPDF_Image_GetHeight(image));
+  HPDF_Page_DrawImage(page, image, outline / 2, outline / 2,
+                      HPDF_Image_GetWidth(image), HPDF_Image_GetHeight(image));
 
   // Define the dash
   HPDF_UINT16 dash[]{3};
 
   // Fold line
-  HPDF_Page_SetLineWidth(page, 2);
+  HPDF_Page_SetLineWidth(page, outline);
   HPDF_Page_SetDash(page, dash, 1, 1);
   HPDF_Page_Rectangle(page, 0, 0, getWidth(), getHeight());
   HPDF_Page_Stroke(page);

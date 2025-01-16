@@ -22,7 +22,7 @@ class PdfWriter {
 private:
   HPDF_Doc document;
   HPDF_Font font;
-  double width, height;
+  double width, height, outline;
 
   HPDF_Page createPage();
 
@@ -33,7 +33,7 @@ public:
    * @param width of the page in pixels
    * @param height of the page in pixels
    */
-  PdfWriter(double width, double height);
+  PdfWriter(double width, double height, double outline);
   ~PdfWriter();
 
   /**
